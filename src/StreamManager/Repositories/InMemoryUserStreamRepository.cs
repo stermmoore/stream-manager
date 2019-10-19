@@ -31,7 +31,10 @@ namespace StreamManager.Repositories
 
         public Task DecrementUserStreamCount(string username)
         {
-            throw new System.NotImplementedException();
+            if(_userStreamCounts.ContainsKey(username) && _userStreamCounts[username] > 0)
+                _userStreamCounts[username]--;
+
+            return Task.CompletedTask;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace StreamManager.Tests
             Assert.AreEqual(3, userStreamCount.Value);
         }
 
-                [Test]
+        [Test]
         public async Task UserStreamControllerTests_StartIncrementsStreamCount()
         {
             //Arrange
@@ -46,6 +46,44 @@ namespace StreamManager.Tests
             //Assert
             Assert.IsNotNull(userStreamStartResponse);
             mockRepository.Verify(r => r.IncrementUserStreamCount(It.IsAny<string>()), Times.Once);
+        }
+
+        [Test]
+        public async Task UserStreamControllerTests_StartFailsToIncrementIfTooManyStreams()
+        {
+            //Arrange
+            var mockRepository = new Mock<IUserStreamRepository>();
+            mockRepository.Setup(r => r.GetUserStreamCount(It.IsAny<string>())).Returns(() => Task.FromResult(3));
+            var mockLogger = new Mock<ILogger<UserStreamController>>();
+            var appSettingsMock = new Mock<IOptions<AppSettings>>();
+            appSettingsMock.Setup(s => s.Value).Returns(() => new AppSettings{ MaximumConcurrentUserStreams=3 });
+            var userStreamController = new UserStreamController(mockRepository.Object, appSettingsMock.Object, mockLogger.Object);
+
+            //Act
+            var userStreamStartResponse = await userStreamController.Start("test-user") as ForbidResult;
+
+            //Assert
+            Assert.IsNotNull(userStreamStartResponse);
+            mockRepository.Verify(r => r.IncrementUserStreamCount(It.IsAny<string>()), Times.Never);
+        }
+
+        [Test]
+        public async Task UserStreamControllerTests_StopDecrementsStreamCount()
+        {
+            //Arrange
+            var mockRepository = new Mock<IUserStreamRepository>();
+            mockRepository.Setup(r => r.GetUserStreamCount(It.IsAny<string>())).Returns(() => Task.FromResult(2));
+            var mockLogger = new Mock<ILogger<UserStreamController>>();
+            var appSettingsMock = new Mock<IOptions<AppSettings>>();
+            appSettingsMock.Setup(s => s.Value).Returns(() => new AppSettings{ MaximumConcurrentUserStreams=3 });
+            var userStreamController = new UserStreamController(mockRepository.Object, appSettingsMock.Object, mockLogger.Object);
+
+            //Act
+            var userStreamStartResponse = await userStreamController.Stop("test-user") as OkResult;
+
+            //Assert
+            Assert.IsNotNull(userStreamStartResponse);
+            mockRepository.Verify(r => r.DecrementUserStreamCount(It.IsAny<string>()), Times.Once);
         }
     }
 }

@@ -46,5 +46,13 @@ namespace StreamManager.Controllers
 
             return Ok();
         }
+
+        [HttpGet("stop/{username}")]
+        public async Task<IActionResult> Stop(string username)
+        {
+            await _userStreamRepository.DecrementUserStreamCount(username);
+
+            return Ok();
+        }
     }
 }
