@@ -30,6 +30,8 @@ namespace StreamManager
 
             services.AddHealthChecks();
 
+            services.Configure<AppSettings>(Configuration);
+
             services.AddSingleton<IUserStreamRepository, InMemoryUserStreamRepository>();
         }
 
