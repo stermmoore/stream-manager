@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using StreamManager.Repositories;
 
 namespace StreamManager
@@ -30,6 +31,11 @@ namespace StreamManager
 
             services.AddHealthChecks();
 
+            services.AddSwaggerGen(s =>
+            {
+                s.SwaggerDoc("v1", new OpenApiInfo { Title = "Stream Manager API", Version = "v1"});
+            });
+
             services.Configure<AppSettings>(Configuration);
 
             services.AddSingleton<IUserStreamRepository, InMemoryUserStreamRepository>();
@@ -47,12 +53,17 @@ namespace StreamManager
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health");
+            });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(s =>
+            {
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "stream-manager");
             });
         }
     }

@@ -10,7 +10,7 @@ using StreamManager.Repositories;
 namespace StreamManager.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("v1/[controller]")]
     public class UserStreamController : ControllerBase
     {
         private readonly IUserStreamRepository _userStreamRepository;
@@ -40,7 +40,7 @@ namespace StreamManager.Controllers
             var streamCount = await _userStreamRepository.GetUserStreamCount(username);
 
             if(streamCount >= _appSettings.MaximumConcurrentUserStreams)
-                return Forbid();
+                return StatusCode(403);
 
             await _userStreamRepository.IncrementUserStreamCount(username);
 
