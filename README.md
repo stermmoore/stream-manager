@@ -40,7 +40,7 @@ dotnet test
 - Run Docker build in the directory containing the Dockerfile
 - Tag and Push the container to ECR
 - Create the DynamoDb table 'user-streams' with a key of userName (string)
-- Create an ECS Cluster (I did this using the Get Started wizzard, selecting the custom container and inputting the image URI from ECR)
+- Create an ECS Cluster (I did this using the Get Started wizard, selecting the custom container and inputting the image URI from ECR)
 
 
 # Scalability
