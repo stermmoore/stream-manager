@@ -6,6 +6,10 @@ A client will be prevented from starting a new stream for a given user if the us
 
 Successful calls to the Start, Stop and Count endpoints will return a 200 status code, if the client attempts to start a new stream for a username that already has 3 streams, a 403 (Forbidden) status code will be returned.
 
+To test the API go to:
+
+http://ec2co-ecsel-ha02nwgqcuoa-417588265.eu-west-2.elb.amazonaws.com/swagger/index.html
+
 # Assumptions
 
 The client will always call the stop endpoint when a stream stops. If this is not the case then it may be necessary for a facility to be developed to allow streams to be removed from the count after a period of inactivity, when starting a stream a stream id could be issued, this could be passed periodically to an endpoint which would update a timestamp in the datastore.
@@ -54,5 +58,3 @@ The app is currently deployed as a Docker container running in ECS, more instanc
 - A CI/CD pipeline should be developed, as part of this code should be peer reviewed, unit tests should be run automatically, in addition to this automated end to end tests could be run using tools like Postman/Newman.
 
 - Creation of the ECS Cluster, Service, Task, Load Balancer, DynamoDb table and IAM configuration should all be scripted to allow simple and consistent deployment of infrastructure.
-
-
