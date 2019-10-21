@@ -4,6 +4,8 @@ A service written in dotnet core 3 which exposes an API allowing a client start,
 
 A client will be prevented from starting a new stream for a given user if the user already has 3 concurrent streams (this is configurable in the appsettings.json file).
 
+Successful calls to the Start, Stop and Count endpoints will return a 200 status code, if the client attempts to start a new stream for a username that already has 3 streams, a 403 (Forbidden) status code will be returned.
+
 # Assumptions
 
 The client will always call the stop endpoint when a stream stops. If this is not the case then it may be necessary for a facility to be developed to allow streams to be removed from the count after a period of inactivity, when starting a stream a stream id could be issued, this could be passed periodically to an endpoint which would update a timestamp in the datastore.
