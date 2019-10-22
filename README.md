@@ -8,7 +8,7 @@ Successful calls to the Start, Stop and Count endpoints will return a 200 status
 
 To test the API go to:
 
-http://ec2co-ecsel-ha02nwgqcuoa-417588265.eu-west-2.elb.amazonaws.com/swagger/index.html
+http://streammanager2-134522593.eu-west-2.elb.amazonaws.com/swagger/index.html
 
 # Assumptions
 
